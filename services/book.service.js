@@ -6,11 +6,31 @@ _createBooks()
 
 export const bookService = {
     query,
+    get,
+    getDefaultBookFilter
 }
 
-function query() {
+function query(filterBy = {}) {
     return storageService.query(BOOK_KEY)
-        .then(books => { return books })
+        .then(books => {
+            if (filterBy.name) {
+                const regExp = new RegExp(filterBy.name, 'i')
+                books = books.filter(book => regExp.test(book.title))
+            }
+
+            if (filterBy.price) {
+                books = books.filter(book => book.listPrice.amount >= filterBy.price)
+            }
+            return books
+        })
+}
+
+function get(bookId) {
+    return storageService.get(BOOK_KEY, bookId)
+}
+
+function getDefaultBookFilter() {
+    return { price: 0, name: '' }
 }
 
 function getBookPrice() {
