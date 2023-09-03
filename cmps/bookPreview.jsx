@@ -1,5 +1,6 @@
 
 export function BookPreview({ book }) {
+
     return (
         <article className="book-preview" key={book.id}>
             <h1>{book.title}</h1>

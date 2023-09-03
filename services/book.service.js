@@ -30,7 +30,7 @@ function get(bookId) {
 }
 
 function getDefaultBookFilter() {
-    return { price: 0, name: '' }
+    return { price: '', name: '' }
 }
 
 function getBookPrice() {
