@@ -1,4 +1,5 @@
-import { UserPreview } from './user-preview.jsx'
+import { UserPreview } from '../cmps/user-preview.jsx'
+import { bookService } from '../services/book.service.js'
 
 export function Home() {
     return (
