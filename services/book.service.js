@@ -7,7 +7,9 @@ _createBooks()
 export const bookService = {
     query,
     get,
-    getDefaultBookFilter
+    getDefaultBookFilter,
+    getEmptyBoook,
+    save
 }
 
 function query(filterBy = {}) {
@@ -23,6 +25,14 @@ function query(filterBy = {}) {
             }
             return books
         })
+}
+
+function save(book) {
+    if (book.id) {
+        return storageService.put(BOOK_KEY, book)
+    } else {
+        return storageService.post(BOOK_KEY, book)
+    }
 }
 
 function get(bookId) {
@@ -50,12 +60,13 @@ function _createBooks() {
     }
 }
 
-function _createBook(title) {
+function getEmptyBoook() {
     const book = {
-        id: utilService.makeId(),
-        title,
+        title: '',
         description: utilService.makeLorem(5),
-        thumbnail,
+        thumbnail: "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books_23-2149334866.jpg",
+        authors: [],
+        pageCount: '',
         listPrice: getBookPrice()
     }
     return book

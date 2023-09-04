@@ -1,13 +1,20 @@
 import { bookService } from "../services/book.service.js"
 
+const { useParams, useNavigate } = ReactRouterDOM
 const { useState, useEffect } = React
 
-export function BookDetails({ bookId, onBack }) {
-    const [book, onGetBook] = useState(null)
+export function BookDetails() {
+    const [book, setBook] = useState(null)
+    const params = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        bookService.get(bookId)
-            .then(book => onGetBook(book))
+        bookService.get(params.bookId)
+            .then(book => setBook(book))
+            .catch(err => {
+                console.log('err', err)
+                navigate('/book')
+            })
     }, [])
 
     function bookReadDifficulty() {
@@ -36,14 +43,19 @@ export function BookDetails({ bookId, onBack }) {
         return priceColor
     }
 
-    console.log(book)
+    function onBack() {
+        navigate('/book')
+    }
+
     if (!book) return <h1>Loading...</h1>
+
     return (
         <section className="book-details">
             <h2>{book.title}</h2>
             <h1>{book.authors}</h1>
             <h4>Price: <span className={priceColor()}>{book.listPrice.amount}</span> {book.listPrice.currencyCode}</h4>
             <p>{book.description}</p>
+            <img src={book.thumbnail} />
             <h5>Pages count:{book.pageCount} {bookReadDifficulty()}</h5>
             <button onClick={onBack}>Close</button>
         </section>

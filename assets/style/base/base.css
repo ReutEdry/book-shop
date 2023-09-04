@@ -50,3 +50,7 @@ object {
 .green {
   color: green;
 }
+
+.navLinks a:not(:first-child) {
+  margin-inline-start: 20px;
+}
