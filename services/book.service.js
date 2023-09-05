@@ -9,7 +9,10 @@ export const bookService = {
     get,
     getDefaultBookFilter,
     getEmptyBoook,
-    save
+    save,
+    addReview,
+    getEmptyReview,
+    deleteReview
 }
 
 function query(filterBy = {}) {
@@ -25,6 +28,44 @@ function query(filterBy = {}) {
             }
             return books
         })
+}
+
+function addReview(bookId, review) {
+    return storageService.get(BOOK_KEY, bookId)
+        .then(book => {
+            if (!book['reviews']) {
+                book.reviews = [review]
+                storageService.put(BOOK_KEY, book)
+            } else {
+                book['reviews'].push(review)
+                storageService.put(BOOK_KEY, book)
+            }
+            return book
+        })
+}
+
+function deleteReview(reviewId, bookId) {
+    return storageService.get(BOOK_KEY, bookId)
+        .then(book => {
+            let newReviews = book.reviews.filter(review => {
+                return review.id !== reviewId
+            })
+            // console.log(newReviews)
+            book.reviews = newReviews
+            return storageService.put(BOOK_KEY, book)
+
+        })
+
+}
+
+function getEmptyReview() {
+    return {
+        id: utilService.makeId(),
+        fullName: '',
+        rating: 5,
+        review: '',
+        date: ''
+    }
 }
 
 function save(book) {

@@ -9,11 +9,11 @@ export function BookEdit() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (params.bookId) loadCar()
+        if (params.bookId) loadBook()
     }, [])
 
 
-    function loadCar() {
+    function loadBook() {
         bookService.get(params.bookId)
             .then(setNewBook)
             .catch(err => console.log('err:', err))
